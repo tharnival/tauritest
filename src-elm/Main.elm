@@ -1,8 +1,13 @@
 port module Main exposing (..)
 
 import Browser
-import Html exposing (Html, button, div, text, br)
-import Html.Events exposing (onClick)
+import Css
+import Html exposing (Html)
+import Html.Styled exposing (button, div, text, br, main_, toUnstyled)
+import Html.Styled.Attributes exposing (css)
+import Html.Styled.Events exposing (onClick)
+import Tailwind.Theme exposing (..)
+import Tailwind.Utilities exposing (..)
 
 
 -- MAIN
@@ -61,10 +66,25 @@ subscriptions _ =
 
 view : Model -> Html Msg
 view model =
+  let
+      buttonStyle =
+        css
+          [ bg_color gray_300
+          , border_0
+          , rounded_md
+          , text_2xl
+          -- , w_32
+          , py_2
+          , Css.hover [ bg_color gray_600 ]
+          , Css.active [ bg_color gray_800 ]
+          ]
+  in
+  toUnstyled <| main_ [] [
   div []
     [ button [ onClick Decrement ] [ text "-" ]
     , div [] [ text (String.fromInt model.count) ]
-    , button [ onClick Increment ] [ text "+" ]
+    , button [ buttonStyle, onClick Increment ] [ text "+" ]
     , br [] []
-    , button [ onClick Reset ] [ text "reset" ]
+    , button [ buttonStyle, onClick Reset ] [ text "reset" ]
     ]
+  ]

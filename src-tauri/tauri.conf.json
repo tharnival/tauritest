@@ -1,6 +1,6 @@
 {
   "build": {
-    "beforeBuildCommand": "",
+    "beforeBuildCommand": "elm make src-elm/Main.elm --optimize --output=ui/main.js",
     "beforeDevCommand": "",
     "devPath": "../ui",
     "distDir": "../ui",
