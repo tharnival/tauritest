@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="main.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 id="header">Welcome from Tauri!</h1>
+    <div id="main"></div>
+    <script type="module">
+      const root = document.getElementById("main");
+      const app = Elm.Main.init({ node: root, flags: {} });
+      const ports = app.ports;
+      const invoke = window.__TAURI__.invoke
+
+      ports.increment.subscribe(async (count) =>
+        ports.updateCount.send(await invoke("increment", {
+          current: count
+        })));
+
+      ports.decrement.subscribe(async (count) =>
+        ports.updateCount.send(await invoke("decrement", {
+          current: count
+        })));
+
+    </script>
+  </body>
+</html>
