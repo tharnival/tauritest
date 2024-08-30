@@ -15,6 +15,16 @@
       "all": false,
       "window": {
         "minimize": true
+      },
+      "shell": {
+        "sidecar": true,
+        "scope": [
+          {
+            "name": "binaries/svn",
+            "sidecar": true,
+            "args": true
+          }
+        ]
       }
     },
     "bundle": {
@@ -48,7 +58,10 @@
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": ""
-      }
+      },
+      "externalBin": [
+        "binaries/svn"
+      ]
     },
     "security": {
       "csp": null

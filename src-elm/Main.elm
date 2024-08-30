@@ -19,11 +19,13 @@ main =
 -- MODEL
 
 type alias Model =
-  { count : Int }
+  { count : Int
+  , message : String
+  }
 
 init : () -> (Model, Cmd msg)
 init flags =
-  ({ count = 0 }, Cmd.none)
+  ({ count = 0, message = "..." }, Cmd.none)
 
 
 -- PORT
@@ -32,6 +34,8 @@ port updateCount : (Int -> msg) -> Sub msg
 port increment : Int -> Cmd msg
 port decrement : Int -> Cmd msg
 port minimize : () -> Cmd msg
+port updateText : (String -> msg) -> Sub msg
+port svn : () -> Cmd msg
 
 
 -- UPDATE
@@ -42,6 +46,8 @@ type Msg
   | Decrement
   | Reset
   | Minimize
+  | UpdateText String
+  | Svn
 
 
 update : Msg -> Model -> (Model, Cmd msg)
@@ -57,13 +63,19 @@ update msg model =
       ({model | count = 0}, Cmd.none)
     Minimize ->
       (model, minimize())
-
+    UpdateText txt ->
+      ({model | message = txt }, Cmd.none)
+    Svn ->
+      (model, svn())
 
 -- SUBSCRIPTIONS
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-  updateCount UpdateCount
+  Sub.batch
+    [ updateCount UpdateCount
+    , updateText UpdateText
+    ]
 
 
 -- VIEW
@@ -91,5 +103,8 @@ view model =
     , br [] []
     , button [ buttonStyle, onClick Reset ] [ text "reset" ]
     , button [ buttonStyle, onClick Minimize ] [ text "minimize" ]
+    , br [] []
+    , button [ buttonStyle, onClick Svn ] [ text "svn" ]
+    , div [] [ text model.message ]
     ]
   ]

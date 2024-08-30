@@ -5200,16 +5200,27 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (flags) {
 	return _Utils_Tuple2(
-		{count: 0},
+		{count: 0, message: '...'},
 		$elm$core$Platform$Cmd$none);
 };
 var $author$project$Main$UpdateCount = function (a) {
 	return {$: 'UpdateCount', a: a};
 };
+var $author$project$Main$UpdateText = function (a) {
+	return {$: 'UpdateText', a: a};
+};
+var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $author$project$Main$updateCount = _Platform_incomingPort('updateCount', $elm$json$Json$Decode$int);
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Main$updateText = _Platform_incomingPort('updateText', $elm$json$Json$Decode$string);
 var $author$project$Main$subscriptions = function (_v0) {
-	return $author$project$Main$updateCount($author$project$Main$UpdateCount);
+	return $elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				$author$project$Main$updateCount($author$project$Main$UpdateCount),
+				$author$project$Main$updateText($author$project$Main$UpdateText)
+			]));
 };
 var $elm$json$Json$Encode$int = _Json_wrap;
 var $author$project$Main$decrement = _Platform_outgoingPort('decrement', $elm$json$Json$Encode$int);
@@ -5217,6 +5228,11 @@ var $author$project$Main$increment = _Platform_outgoingPort('increment', $elm$js
 var $elm$json$Json$Encode$null = _Json_encodeNull;
 var $author$project$Main$minimize = _Platform_outgoingPort(
 	'minimize',
+	function ($) {
+		return $elm$json$Json$Encode$null;
+	});
+var $author$project$Main$svn = _Platform_outgoingPort(
+	'svn',
 	function ($) {
 		return $elm$json$Json$Encode$null;
 	});
@@ -5244,16 +5260,28 @@ var $author$project$Main$update = F2(
 						model,
 						{count: 0}),
 					$elm$core$Platform$Cmd$none);
-			default:
+			case 'Minimize':
 				return _Utils_Tuple2(
 					model,
 					$author$project$Main$minimize(_Utils_Tuple0));
+			case 'UpdateText':
+				var txt = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{message: txt}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(
+					model,
+					$author$project$Main$svn(_Utils_Tuple0));
 		}
 	});
 var $author$project$Main$Decrement = {$: 'Decrement'};
 var $author$project$Main$Increment = {$: 'Increment'};
 var $author$project$Main$Minimize = {$: 'Minimize'};
 var $author$project$Main$Reset = {$: 'Reset'};
+var $author$project$Main$Svn = {$: 'Svn'};
 var $rtfeldman$elm_css$Css$Preprocess$ExtendSelector = F2(
 	function (a, b) {
 		return {$: 'ExtendSelector', a: a, b: b};
@@ -7932,6 +7960,25 @@ var $author$project$Main$view = function (model) {
 							_List_fromArray(
 								[
 									$rtfeldman$elm_css$Html$Styled$text('minimize')
+								])),
+							A2($rtfeldman$elm_css$Html$Styled$br, _List_Nil, _List_Nil),
+							A2(
+							$rtfeldman$elm_css$Html$Styled$button,
+							_List_fromArray(
+								[
+									buttonStyle,
+									$rtfeldman$elm_css$Html$Styled$Events$onClick($author$project$Main$Svn)
+								]),
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$text('svn')
+								])),
+							A2(
+							$rtfeldman$elm_css$Html$Styled$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$text(model.message)
 								]))
 						]))
 				])));

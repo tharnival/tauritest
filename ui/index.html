@@ -29,6 +29,10 @@
         invoke("minimize", {})
       );
 
+      ports.svn.subscribe(async () =>
+        ports.updateText.send(await invoke("svn", {})
+      ));
+
     </script>
   </body>
 </html>
