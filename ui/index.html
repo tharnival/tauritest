@@ -18,12 +18,16 @@
       ports.increment.subscribe(async (count) =>
         ports.updateCount.send(await invoke("increment", {
           current: count
-        })));
+      })));
 
       ports.decrement.subscribe(async (count) =>
         ports.updateCount.send(await invoke("decrement", {
           current: count
-        })));
+      })));
+
+      ports.minimize.subscribe(() =>
+        invoke("minimize", {})
+      );
 
     </script>
   </body>

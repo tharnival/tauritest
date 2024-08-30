@@ -28,9 +28,10 @@ init flags =
 
 -- PORT
 
+port updateCount : (Int -> msg) -> Sub msg
 port increment : Int -> Cmd msg
 port decrement : Int -> Cmd msg
-port updateCount : (Int -> msg) -> Sub msg
+port minimize : () -> Cmd msg
 
 
 -- UPDATE
@@ -40,6 +41,7 @@ type Msg
   | Increment
   | Decrement
   | Reset
+  | Minimize
 
 
 update : Msg -> Model -> (Model, Cmd msg)
@@ -53,6 +55,8 @@ update msg model =
       (model, decrement(model.count))
     Reset ->
       ({model | count = 0}, Cmd.none)
+    Minimize ->
+      (model, minimize())
 
 
 -- SUBSCRIPTIONS
@@ -73,7 +77,7 @@ view model =
           , border_0
           , rounded_md
           , text_2xl
-          -- , w_32
+          , w_32
           , py_2
           , Css.hover [ bg_color gray_600 ]
           , Css.active [ bg_color gray_800 ]
@@ -81,10 +85,11 @@ view model =
   in
   toUnstyled <| main_ [] [
   div []
-    [ button [ onClick Decrement ] [ text "-" ]
+    [ button [ buttonStyle, onClick Decrement ] [ text "-" ]
     , div [] [ text (String.fromInt model.count) ]
     , button [ buttonStyle, onClick Increment ] [ text "+" ]
     , br [] []
     , button [ buttonStyle, onClick Reset ] [ text "reset" ]
+    , button [ buttonStyle, onClick Minimize ] [ text "minimize" ]
     ]
   ]
