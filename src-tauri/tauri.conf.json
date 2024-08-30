@@ -17,11 +17,11 @@
         "minimize": true
       },
       "shell": {
-        "sidecar": true,
+        "execute": true,
         "scope": [
           {
-            "name": "binaries/svn",
-            "sidecar": true,
+            "name": "svn",
+            "cmd": "svn",
             "args": true
           }
         ]
@@ -58,10 +58,7 @@
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": ""
-      },
-      "externalBin": [
-        "binaries/svn"
-      ]
+      }
     },
     "security": {
       "csp": null

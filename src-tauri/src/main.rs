@@ -26,11 +26,10 @@ fn minimize(window: State<Window>) {
 
 #[tauri::command]
 fn svn() -> String {
-  let (mut scrx, mut _child) = Command::new_sidecar("svn")
-    .map(|cmd| cmd.args(["status"]))
-    .expect("Failed to create 'svn' binary command")
+  let (mut scrx, mut _child) = Command::new("svn")
+    .args(["status"])
     .spawn()
-    .expect("Failed to spawn sidecar");
+    .expect("Failed to spawn command");
 
   let (tx, rx) = mpsc::channel();
   tauri::async_runtime::spawn(async move {
